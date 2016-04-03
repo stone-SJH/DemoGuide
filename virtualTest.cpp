@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
+#ifndef VIRTUAL
 #define VIRTUAL
+
+#ifndef VFUNC
 //#define VFUNC
 class father
 {
@@ -36,7 +39,9 @@ public:
 		cout << "daughter's age is " << age << endl;
 	}
 };
+#endif
 
+#ifndef PVFUNC
 #define PVFUNC
 class Person{
 protected:
@@ -81,6 +86,7 @@ public:
 		cout << "Teen!" << endl;
 	}
 };
+#endif
 
 #ifdef VIRTUAL
 int main()
@@ -113,4 +119,5 @@ int main()
 	int a;
 	cin >> a;
 }
+#endif
 #endif

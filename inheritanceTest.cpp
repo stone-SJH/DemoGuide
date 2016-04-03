@@ -1,5 +1,6 @@
 #include<iostream>
 using namespace std;
+#ifndef INHERIT
 //#define INHERIT
 class A
 {
@@ -43,9 +44,10 @@ public:
 		d = publicdateA;    //ok：基类的公共成员在派生类中为保护成员
 	}
 };
-#ifdef INHERIT
+
 int main()
 {
+#ifdef INHERIT
 	A* test1 = new B();
 	//A* test2 = new C(); //error
 	//A* test3 = new D(); //error
@@ -66,6 +68,6 @@ int main()
 	//a = objD.privatedateA;   //error：基类中私有成员在派生类中是不可见的,对对象不可见
 	//a = objD.protecteddateA; //error：基类的保护成员在派生类中为保护成员，对对象不可见
 	//a = objD.publicdateA;    //error：基类的公共成员在派生类中为保护成员，对对象不可见
-
+#endif
 }
 #endif
