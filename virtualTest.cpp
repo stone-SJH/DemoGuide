@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 #ifndef VIRTUAL
-#define VIRTUAL
+//#define VIRTUAL
 
 #ifndef VFUNC
 //#define VFUNC
@@ -92,6 +92,8 @@ public:
 #define VTABLE
 class Base1 {
 public:
+	Base1(){}
+	virtual ~Base1(){}
 	virtual void f() 
 	{ 
 		cout << "Base1::f" << endl; 
@@ -109,6 +111,8 @@ public:
 
 class Base2 {
 public:
+	Base2(){}
+	virtual ~Base2(){}
 	virtual void f() 
 	{ 
 		cout << "Base2::f" << endl; 
@@ -126,6 +130,8 @@ private:
 
 class Base3 {
 public:
+	Base3(){}
+	virtual ~Base3(){}
 	virtual void f() 
 	{ 
 		cout << "Base3::f" << endl; 
@@ -143,6 +149,8 @@ public:
 
 class Derive : public Base1, public Base2, public Base3 {
 public:
+	Derive(){}
+	virtual ~Derive(){}
 	virtual void f()//重新定义基类中的虚函数
 	{ 
 		cout << "Derive::f" << endl; 
@@ -196,71 +204,47 @@ int main()
 	int** pVtab = (int**)&d;
 
 	//Base1's vtable
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+0)+0);
-	pFun = (Fun)pVtab[0][0];
-	pFun();
+	//pFun = (Fun)pVtab[0][0];
+	//pFun();
 
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+0)+1);
 	pFun = (Fun)pVtab[0][1];
 	pFun();
 	
 	//Derive's vtable
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+0)+2);
 	pFun = (Fun)pVtab[0][2];
+	pFun();
+
+	pFun = (Fun)pVtab[0][3];
 	pFun();
 
 	//no Base1::h and Derive::h1
 	//非虚函数不出现在子类实例的vtable中
 
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+0)+3);
-	pFun = (Fun)pVtab[0][3];
-	//pFun();
-	cout << pFun << endl;
-
-
-
 	//Base2's vtable
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+0);
-	pFun = (Fun)pVtab[1][0];
-	pFun();
-
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+1);
 	pFun = (Fun)pVtab[1][1];
 	pFun();
 
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+2);
-	pFun = (Fun)pVtab[1][2];//父类Private的虚函数仍然会出现在vtable中
-	pFun();//通过vtable非法访问本来访问不到的父类private虚函数
-
-	//vtable' tail
-	pFun = (Fun)pVtab[1][3];
-	cout << pFun << endl;
-
-
-
-	//Base3's vtable
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+0);
-	pFun = (Fun)pVtab[2][0];
+	pFun = (Fun)pVtab[1][2];
 	pFun();
 
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+1);
+	pFun = (Fun)pVtab[1][3];//父类Private的虚函数仍然会出现在vtable中
+	pFun();//通过vtable非法访问本来访问不到的父类private虚函数
+
+	//Base3's vtable
 	pFun = (Fun)pVtab[2][1];
 	pFun();
 
-	//pFun = (Fun)*((int*)*(int*)((int*)&d+1)+2);
 	pFun = (Fun)pVtab[2][2];
 	pFun();
 
-	//vtable' tail
 	pFun = (Fun)pVtab[2][3];
-	cout << pFun << endl;
-
+	pFun();
 
 	//Base1 *b1 = new Derive();
 	//b1->g1(); //error：父类指针无法调用子类未覆盖父类成员虚函数的虚函数
 	Base1 *b1 = new Derive();
 	int** b1Vtab = (int**)b1;
-	pFun = (Fun)b1Vtab[0][2];
+	pFun = (Fun)b1Vtab[0][3];
 	pFun();//通过虚表访问到了Derive::g1
 
 #endif
