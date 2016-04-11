@@ -1,10 +1,13 @@
-#ifndef CONTAINER
-#define CONTAINER
+//#define CONTAINER
+#ifdef CONTAINER
+
 #include <iostream>
 #include <vector>
 #include <deque>
 #include <list>
 #include <string>
+#include <stack>
+#include <queue>
 using namespace std;
 
 class Foo{
@@ -14,6 +17,47 @@ public:
 	Foo(){ con = 0; }
 	Foo(int i){ con = i; }
 };
+
+class Node
+{  
+public:  
+	Node(int nri, char *pszName)  
+	{  
+		strcpy_s(szName, pszName);  
+		priority = nri;  
+	}  
+	char* GetName();  
+	int   GetPriority();  
+	char* GetName() const;  
+	int   GetPriority() const;  
+private:  
+	char szName[20];  
+	int  priority;  
+};  
+char* Node::GetName()  
+{
+	return szName;
+}
+int   Node::GetPriority()
+{
+	return priority;
+}
+char* Node::GetName() const
+{
+	return (char*)szName;
+}
+int   Node::GetPriority() const
+{
+	return priority;
+}
+bool operator<(const Node &a, const Node &b)
+{
+	if (a.GetPriority() != b.GetPriority())
+		return a.GetPriority() <= b.GetPriority();
+	else
+		return strcmp(a.GetName(), b.GetName()) > 0;
+}
+
 int main(){
 	//#define INIT
 #ifdef INIT
@@ -155,7 +199,7 @@ int main(){
 	test1.assign(10, 1); //将test1重新设置为10个1
 #endif
 
-#define STRING
+//#define STRING
 #ifdef STRING
 	string s;
 	for (int i = 0; i < 10; i++)
@@ -229,6 +273,7 @@ int main(){
 		pos++;
 	}
 
+	//获取test4中全部的单词
 	string test4 = "--We were he pride of 10 she named us: Benjamin, Phoenix, 332643145t{}?the Prodigal and perspicacious pacific Suzanne--";
 	string alphabet = "abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ";
 	int longPos = 0, longSize = 0;
@@ -250,7 +295,33 @@ int main(){
 	for (vector<string>::iterator i = vocabs.begin(); i != vocabs.end(); i++)
 		cout << *i << endl;
 
-#endif 
+	string test5 = "abc123";
+	string cmp1 = "abc";
+	int r1 = test5.compare(cmp1);//+
+	int r2 = test5.compare(0, 3, cmp1);//0
+	int r3 = test5.compare(0, 2, cmp1, 0, 2);//0
+
+#endif
+
+//#define ADAPTOR
+#ifdef ADAPTOR
+	vector<string> str_vec;
+	deque<string> str_deq;
+	list<string> str_list;
+	stack<string> test0(str_deq);
+	stack<string, vector<string> > test1(str_vec);
+	queue<string> test2(str_deq);
+	priority_queue<Node> test3;
+	test3.push(Node(2, "a1"));
+	test3.push(Node(3, "b1"));
+	test3.push(Node(1, "c1"));
+	cout << test3.top().GetName() << endl;
+	test3.pop();
+	cout << test3.top().GetName() << endl;
+	test3.pop();
+	cout << test3.top().GetName() << endl;
+	test3.pop();
+#endif
 	return 0;
 }
 
